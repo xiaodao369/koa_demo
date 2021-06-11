@@ -4,7 +4,7 @@
  * @Author: 小道
  * @Date: 2021-06-10 11:58:29
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-11 10:02:13
+ * @LastEditTime: 2021-06-11 11:54:38
  */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -17,6 +17,13 @@ var RouterManager_1 = require("../../core/route/RouterManager");
 var LoginApi = /** @class */ (function () {
     function LoginApi() {
     }
+    /**
+     * @api {get}  /login/getInfo 获取用户数据0
+     * @apiDescription 获取用户数据
+     * @apiName getInfo
+     * @apiGroup login
+     * @apiVersion 1.0.0
+     */
     LoginApi.prototype.login = function (ctx) {
         ctx.body = { ok: "11111" };
     };

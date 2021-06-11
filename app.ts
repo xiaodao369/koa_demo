@@ -3,10 +3,11 @@
  * @Author: 小道
  * @Date: 2021-06-09 15:56:53
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-11 10:33:55
+ * @LastEditTime: 2021-06-11 11:36:47
  */
 
 import Koa from "koa";
+import serve from "koa-static";
 import { RouterManager } from "./app/core/route/RouterManager";
 
 const app = new Koa();
@@ -14,15 +15,18 @@ const app = new Koa();
 
 const router = RouterManager.instance().init(__dirname.replace(/\\/g, '/') + "/app/game/api");
 
-router.get("", async ctx => {
-    ctx.body = "你好! 111";
-})
+// router.get("", async ctx => {
+//     ctx.body = "你好! 111";
+// })
+
+app.use(serve(__dirname.replace(/\\/g, '/').replace("dist", "") + "apidoc", { extensions: ["html"] }))
 
 app.use((ctx, next) => {
     try {
         next()
     } catch (err) {
         // 所有的异常都在 app 上触发一个 error 事件，框架会记录一条错误日志
+        console.error("触发错误")
         app.emit('error', err, this)
         const status = err.status || 500
         // 生产环境时 500 错误的详细错误内容不返回给客户端，因为可能包含敏感信息
@@ -40,6 +44,6 @@ app.use((ctx, next) => {
 })
 
 app.use(router.routes());
-app.listen(31001);
-console.info("start server listen 31001");
+app.listen(30001);
+console.info("start server listen 30001");
 

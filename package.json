@@ -7,20 +7,35 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./dist/app.js",
     "ts": "tsc -w",
+    "doc": "apidoc -i app/game/api/ -o apidoc/",
     "watch": "nodemon ./dist/app.js"
+    
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/koa-static": "^4.0.1",
+    "apidoc": "^0.28.1",
     "glob": "^7.1.7",
     "koa": "^2.13.1",
     "koa-router": "^10.0.0",
+    "koa-static": "^5.0.0",
     "nodemon": "^2.0.7"
   },
   "devDependencies": {
     "@types/koa": "^2.13.3",
     "@types/koa-router": "^7.4.2",
     "typescript": "^4.3.2"
+  },
+  "apidoc": {
+    "name": "koa-demo",
+    "description": "koa 学习框架",
+    "title": "接口文本",
+    "version":"1.0.0",
+    "header": {
+      "title": "文档说明",
+      "filename":"header.md"
+    }
   }
 }
