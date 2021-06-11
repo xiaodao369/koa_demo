@@ -3,7 +3,7 @@
  * @Author: 小道
  * @Date: 2021-06-09 15:56:53
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-11 18:10:31
+ * @LastEditTime: 2021-06-11 18:18:54
  */
 
 import Koa from "koa";
@@ -17,10 +17,6 @@ const app = new Koa();
 RedisManager.instance();
 
 const router = RouterManager.instance().init(__dirname.replace(/\\/g, '/') + "/app/game/api");
-
-// router.get("", async ctx => {
-//     ctx.body = "你好! 111";
-// })
 
 app.use(serve(__dirname.replace(/\\/g, '/').replace("dist", "") + "apidoc", { extensions: ["html"] }))
 

@@ -14,34 +14,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var redis = __importStar(require("redis"));
 var BaseSingle_1 = require("../base/BaseSingle");
 /*
  * @Description: redis管理类
  * @Author: 小道
  * @Date: 2021-06-11 16:49:06
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-11 18:10:03
+ * @LastEditTime: 2021-06-11 18:24:47
  */
 var RedisManager = /** @class */ (function (_super) {
     __extends(RedisManager, _super);
@@ -52,24 +32,10 @@ var RedisManager = /** @class */ (function (_super) {
             host: '127.0.0.1',
             db: 0
         };
-        _this._redisClient = redis.createClient(_this._config);
-        _this._redisClient.on("error", _this.onError.bind(_this));
-        _this._redisClient.on("connect", _this.onConnect.bind(_this));
         return _this;
     }
-    RedisManager.prototype.onError = function (error) {
-        console.error(error);
+    RedisManager.prototype.get = function () {
     };
-    RedisManager.prototype.onConnect = function () {
-        console.log("redis connect");
-    };
-    Object.defineProperty(RedisManager.prototype, "redis", {
-        get: function () {
-            return this._redisClient;
-        },
-        enumerable: false,
-        configurable: true
-    });
     return RedisManager;
 }(BaseSingle_1.BaseSingle));
 exports.default = RedisManager;

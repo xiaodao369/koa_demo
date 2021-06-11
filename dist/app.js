@@ -4,7 +4,7 @@
  * @Author: 小道
  * @Date: 2021-06-09 15:56:53
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-11 18:10:31
+ * @LastEditTime: 2021-06-11 18:18:54
  */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -19,9 +19,6 @@ var app = new koa_1.default();
 //启动redis连接
 RedisManager_1.default.instance();
 var router = RouterManager_1.RouterManager.instance().init(__dirname.replace(/\\/g, '/') + "/app/game/api");
-// router.get("", async ctx => {
-//     ctx.body = "你好! 111";
-// })
 app.use(koa_static_1.default(__dirname.replace(/\\/g, '/').replace("dist", "") + "apidoc", { extensions: ["html"] }));
 app.use(function (ctx, next) {
     try {
