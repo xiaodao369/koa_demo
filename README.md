@@ -1,9 +1,9 @@
 # koa_demo
 -模块
-    npm i koa koa-router koa-static --save
-    npm i --save-dev @types/koa @types/koa-router @types/koa-static
-    npm i nodemon --save
-    npm install apidoc --save
+    -npm i koa koa-router koa-static --save
+    -npm i --save-dev @types/koa @types/koa-router @types/koa-static
+    -npm i nodemon --save
+    -npm install apidoc --save
 
 -vscode 插件
     koroFileHeader 用于生成注释
