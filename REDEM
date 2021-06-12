@@ -4,6 +4,9 @@
     npm i nodemon --save
     npm install apidoc --save
     npm install --save @types/redis redis
+    npm install typeorm --save
+    npm install reflect-metadata --save
+    npm install mysql --save
 
 -vscode 插件
     koroFileHeader 用于生成注释

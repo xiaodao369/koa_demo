@@ -14,28 +14,41 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var BaseSingle_1 = require("../base/BaseSingle");
+var RedisPool_1 = __importDefault(require("./RedisPool"));
 /*
  * @Description: redis管理类
  * @Author: 小道
  * @Date: 2021-06-11 16:49:06
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-11 18:24:47
+ * @LastEditTime: 2021-06-12 10:10:26
  */
 var RedisManager = /** @class */ (function (_super) {
     __extends(RedisManager, _super);
     function RedisManager() {
-        var _this = _super.call(this) || this;
-        _this._config = {
-            port: 6379,
-            host: '127.0.0.1',
-            db: 0
-        };
-        return _this;
+        return _super.call(this) || this;
     }
-    RedisManager.prototype.get = function () {
+    /**初始化 默认建立一个连接 */
+    RedisManager.prototype.init = function () {
+        var client = RedisPool_1.default.instance().get();
+        RedisPool_1.default.instance().put(client);
     };
+    Object.defineProperty(RedisManager.prototype, "redis", {
+        get: function () {
+            var client = RedisPool_1.default.instance().get();
+            if (!client.connected) {
+                RedisPool_1.default.instance().put(client);
+                client = RedisPool_1.default.instance().get();
+            }
+            return client;
+        },
+        enumerable: false,
+        configurable: true
+    });
     return RedisManager;
 }(BaseSingle_1.BaseSingle));
 exports.default = RedisManager;

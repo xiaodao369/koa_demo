@@ -1,26 +1,32 @@
 import * as redis from "redis";
 import { BaseSingle } from "../base/BaseSingle";
+import RedisPool from "./RedisPool";
 
 /*
  * @Description: redis管理类
  * @Author: 小道
  * @Date: 2021-06-11 16:49:06
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-11 18:24:47
+ * @LastEditTime: 2021-06-12 10:10:26
  */
 export default class RedisManager extends BaseSingle {
-
-    private _config = {
-        port: 6379,
-        host: '127.0.0.1',
-        db: 0
-    }
 
     constructor() {
         super();
     }
 
-    get(): redis.RedisClient {
-
+    /**初始化 默认建立一个连接 */
+    init():void{
+        let client = RedisPool.instance().get();
+        RedisPool.instance().put(client);
+    }
+    
+    get redis():redis.RedisClient{
+        let client = RedisPool.instance().get();
+        if(!client.connected){
+            RedisPool.instance().put(client);
+            client = RedisPool.instance().get()
+        }
+        return client;
     }
 }

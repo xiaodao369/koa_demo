@@ -3,7 +3,7 @@
  * @Author: 小道
  * @Date: 2021-06-10 10:51:58
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-10 15:44:51
+ * @LastEditTime: 2021-06-11 20:51:24
  */
 
 export class BaseSingle {
@@ -13,7 +13,7 @@ export class BaseSingle {
     }
 
     static instance<T extends {}>(this: new () => T): T {
-        if ((<any>this)._instance == null) {
+        if (!(<any>this)._instance) {
             (<any>this)._instance = new this();
         }
         return (<any>this)._instance;
