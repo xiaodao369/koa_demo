@@ -4,7 +4,7 @@
  * @Author: 小道
  * @Date: 2021-06-11 15:42:00
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-12 15:14:00
+ * @LastEditTime: 2021-06-12 17:30:08
  */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -82,7 +82,7 @@ var UserApi = /** @class */ (function () {
      * @apiGroup user
      * @apiVersion 1.0.0
      * @apiHeader {string} access-key
-     * @apiParam {string} name 用户名称
+     * @apiParam {string} nick 用户名称
      * @apiParam {string} head 头像
      * @apiParam {number} sex 性别
      * @apiSuccess {object} data {code:number}
@@ -94,9 +94,8 @@ var UserApi = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log(JSON.stringify(ctx));
                         logic = new UserLogic_1.default();
-                        return [4 /*yield*/, logic.create()];
+                        return [4 /*yield*/, logic.create(ctx.request.body)];
                     case 1:
                         result = _a.sent();
                         ctx.status = 200;

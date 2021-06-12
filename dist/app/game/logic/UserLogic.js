@@ -4,7 +4,7 @@
  * @Autor: 小道
  * @Date: 2021-06-12 13:48:26
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-12 13:53:37
+ * @LastEditTime: 2021-06-12 17:22:42
  */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -53,11 +53,11 @@ var UserLogic = /** @class */ (function () {
         this._userRepository = typeorm_1.getCustomRepository(UserRepository_1.default);
     }
     /**创建用户 */
-    UserLogic.prototype.create = function () {
+    UserLogic.prototype.create = function (data) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this._userRepository.createUser("ceshi", "1111", 1)];
+                    case 0: return [4 /*yield*/, this._userRepository.createUser(data.nick, data.head, data.sex)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/, { code: 0 }];

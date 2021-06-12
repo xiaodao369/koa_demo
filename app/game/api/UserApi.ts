@@ -3,7 +3,7 @@
  * @Author: 小道
  * @Date: 2021-06-11 15:42:00
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-12 15:14:00
+ * @LastEditTime: 2021-06-12 17:30:08
  */
 
 import { Context } from "koa";
@@ -37,7 +37,7 @@ export default class UserApi {
      * @apiGroup user
      * @apiVersion 1.0.0
      * @apiHeader {string} access-key
-     * @apiParam {string} name 用户名称
+     * @apiParam {string} nick 用户名称
      * @apiParam {string} head 头像
      * @apiParam {number} sex 性别
      * @apiSuccess {object} data {code:number}
@@ -45,9 +45,8 @@ export default class UserApi {
      */
     @POST("create")
     async create(ctx:Context){
-        console.log(JSON.stringify(ctx));
         let logic = new UserLogic();
-        let result = await logic.create();
+        let result = await logic.create(ctx.request.body as any);
         ctx.status = 200;
         ctx.body = result;
     }

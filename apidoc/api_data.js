@@ -38,7 +38,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "name",
+            "field": "nick",
             "description": "<p>用户名称</p>"
           },
           {

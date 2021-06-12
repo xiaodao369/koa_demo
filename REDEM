@@ -1,12 +1,14 @@
 -模块
     npm i koa koa-router koa-static --save
     npm i --save-dev @types/koa @types/koa-router @types/koa-static
+    npm install koa-bodyparser @types/koa-bodyparser --save
     npm i nodemon --save
     npm install apidoc --save
     npm install --save @types/redis redis
     npm install typeorm --save
     npm install reflect-metadata --save
     npm install mysql --save
+    
 
 -vscode 插件
     koroFileHeader 用于生成注释

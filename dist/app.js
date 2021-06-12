@@ -4,7 +4,7 @@
  * @Author: 小道
  * @Date: 2021-06-09 15:56:53
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-12 14:58:27
+ * @LastEditTime: 2021-06-12 17:19:42
  */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
@@ -36,7 +36,13 @@ var MysqlManager_1 = __importDefault(require("./app/core/mysql/MysqlManager"));
 var RedisManager_1 = __importDefault(require("./app/core/redis/RedisManager"));
 var RouterManager_1 = require("./app/core/route/RouterManager");
 var path = __importStar(require("path"));
+var koa_bodyparser_1 = __importDefault(require("koa-bodyparser"));
 var app = new koa_1.default();
+app.use(koa_bodyparser_1.default({
+    onerror: function (err, ctx) {
+        ctx.throw('body parse error', 422);
+    }
+}));
 //路由表映射
 var router = RouterManager_1.RouterManager.instance().init(__dirname.replace(/\\/g, '/') + "/app/game/api");
 app.use(router.routes());
@@ -45,6 +51,8 @@ app.use(koa_static_1.default(path.join(__dirname, "..", "apidoc")));
 //koa2 错误处理
 app.use(function (ctx, next) {
     try {
+        //禁用koa-bodyparser
+        // if (ctx.path === '/disable') ctx.disableBodyParser = true;
         next();
     }
     catch (err) {
