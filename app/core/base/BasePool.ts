@@ -3,10 +3,10 @@
  * @Author: 小道
  * @Date: 2021-06-11 18:25:43
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-11 20:39:10
+ * @LastEditTime: 2021-06-15 16:11:34
  */
 
-import { BaseSingle } from "./BaseSingle";
+import BaseSingle from "./BaseSingle";
 
 export default class BasePool<classType> extends BaseSingle {
 

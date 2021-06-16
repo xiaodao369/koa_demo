@@ -3,7 +3,7 @@
  * @Author: 小道
  * @Date: 2021-06-10 11:58:29
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-11 11:54:38
+ * @LastEditTime: 2021-06-16 15:55:06
  */
 
 import { Context } from "koa";
@@ -17,10 +17,13 @@ export default class LoginApi {
      * @apiDescription 获取用户数据
      * @apiName getInfo
      * @apiGroup login
+     * @apiParam {number} id id
+     * @apiParam {number} key key
      * @apiVersion 1.0.0
      */
     @GET("getInfo")
-    login(ctx: Context) {
-        ctx.body = { ok: "11111" };
+    login(data: { id: number, key: number }) {
+        console.log("id", data.id, typeof data.key);
+        return { ok: 111111 }
     }
 }

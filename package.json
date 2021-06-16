@@ -16,6 +16,7 @@
   "dependencies": {
     "@types/koa-bodyparser": "^4.3.1",
     "@types/koa-static": "^4.0.1",
+    "@types/log4js": "^2.3.5",
     "@types/redis": "^2.8.29",
     "apidoc": "^0.28.1",
     "glob": "^7.1.7",
@@ -23,6 +24,7 @@
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.0.0",
     "koa-static": "^5.0.0",
+    "log4js": "^6.3.0",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.7",
     "redis": "^3.1.2",

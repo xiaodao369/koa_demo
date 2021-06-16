@@ -6,9 +6,3 @@
  * @LastEditTime: 2021-06-10 15:10:14
  */
 
-export const Controller = (prefix: string = ''): ClassDecorator => {
-    return (target: any) => {
-        //属性注入
-        Reflect.defineProperty(target, "prefix", { value: prefix })
-    };
-};

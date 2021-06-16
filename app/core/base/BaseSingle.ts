@@ -3,10 +3,10 @@
  * @Author: 小道
  * @Date: 2021-06-10 10:51:58
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-11 20:51:24
+ * @LastEditTime: 2021-06-15 16:10:54
  */
 
-export class BaseSingle {
+export default class BaseSingle {
 
     constructor() {
         if ((<any>this)._instance) throw "create new single class";

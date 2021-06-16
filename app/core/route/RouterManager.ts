@@ -3,11 +3,13 @@
  * @Author: 小道
  * @Date: 2021-06-10 10:16:19
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-10 19:44:40
+ * @LastEditTime: 2021-06-16 16:47:10
  */
 import { resolve } from "path";
-import { BaseSingle } from "../base/BaseSingle";
+import BaseSingle from "../base/BaseSingle";
 import KoaRouter from "koa-router";
+import { Context } from "koa";
+import { LogManager } from "../log4js/LogManager";
 
 const glob = require("glob");
 
@@ -55,9 +57,19 @@ export class RouterManager extends BaseSingle {
 
     /**对方法进行装饰注入，这是一个创建方法Mapping装饰器的函数，返回的就是一个装饰器，传入的是想要创建的装饰器的请求方法 */
     setRouter(type: ROUTER_REQUEST_TYPE) {
-        return (path: string) => {
+        let self = this;
+        return function (path: string, ...args: any) {
+            // console.log(arguments)
             if (path.indexOf("/") < 0) path = "/" + path;
-            let methodsMap = this._routerMap.get(type);
+            //动态路由
+            // if (type === ROUTER_REQUEST_TYPE.GET && arguments.length > 1) {
+            //     let i: number, len: number = arguments.length;
+            //     for (i = 1; i < len; i++) {
+            //         path += "/:" + arguments[i];
+            //     }
+            // }
+
+            let methodsMap = self._routerMap.get(type);
             if (!methodsMap) throw type + " 未定义路由请求类型";
             let key = methodsMap.get(path);
             if (key) throw "注册重复key，请检查路由";
@@ -81,12 +93,47 @@ export class RouterManager extends BaseSingle {
                         value.module = target;
                         tempMap.set(resultPath, value);
                         tempMap.delete(path);
+                        // console.log(resultPath);
                         // 添加路由处理器
-                        this._router[requestType as ROUTER_REQUEST_TYPE](resultPath, ...[target.prototype[value.funcName]])
+                        // this._router[requestType as ROUTER_REQUEST_TYPE](resultPath, ...[target.prototype[value.funcName]])
+                        this._router[requestType as ROUTER_REQUEST_TYPE](resultPath, this.messageHandle.bind(this));
                     }
                 })
             })
         }
+    }
+
+    /**消息处理 */
+    private async messageHandle(ctx: Context, next: any) {
+        let curTime = Date.now()
+        let method = ctx.request.method;
+        let reqUrl = ctx.request.url;
+        if (method === "GET") {
+            let idx = reqUrl.indexOf("?");
+            if (idx >= 0) reqUrl = reqUrl.substr(0, idx)
+        }
+        LogManager.instance().httpLog.info(method + " ------> " + reqUrl + " " + JSON.stringify(ctx));
+        let tempMap = this._routerMap.get(ctx.request.method.toLocaleLowerCase());
+        if (tempMap == null) {
+            await next();
+            return;
+        }
+        let methodData = tempMap.get(reqUrl);
+        if (methodData == null) {
+            await next();
+            return;
+        }
+        let params: any;
+        if (method === "GET") {
+            params = ctx.request.query
+        } else if (method === "POST") {
+            params = ctx.request.body;
+        }
+        let callData = await methodData.module.prototype[methodData.funcName](params);
+        ctx.body = callData;
+        let timer = Date.now() - curTime;
+        if (timer >= 1000) LogManager.instance().httpLog.error(method + " <------ " + reqUrl + " " + timer + "ms data:" + JSON.stringify(callData));
+        else LogManager.instance().httpLog.info(method + " <------ " + reqUrl + " " + timer + "ms data:" + JSON.stringify(callData));
     }
 }
 
@@ -108,5 +155,4 @@ export const DELETE = RouterManager.instance().setRouter(ROUTER_REQUEST_TYPE.DEL
 export const API = (basePath: string) => {
     return RouterManager.instance().setApi(basePath);
 }
-
 

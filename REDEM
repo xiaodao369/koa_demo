@@ -8,7 +8,7 @@
     npm install typeorm --save
     npm install reflect-metadata --save
     npm install mysql --save
-    
+    npm install log4js @types/log4js --save
 
 -vscode 插件
     koroFileHeader 用于生成注释
@@ -19,4 +19,7 @@
     npm start 启动服务器
     npm run ts 启动ts自动编译js
     npm run watch-server 启动热更新
+
+-备注
+    前端传过来的数据注意数据类型、尤其number 可能会是string
     
