@@ -1,14 +1,16 @@
 -模块
     npm i koa koa-router koa-static --save
     npm i --save-dev @types/koa @types/koa-router @types/koa-static
-    npm install koa-bodyparser @types/koa-bodyparser --save
-    npm i nodemon --save
+    npm install koa-bodyparser @types/koa-bodyparser --save //post 请求数据解析
+    npm i nodemon --save //热更
     npm install apidoc --save
     npm install --save @types/redis redis
-    npm install typeorm --save
-    npm install reflect-metadata --save
+    npm install typeorm --save //mysql 工具
+    npm install reflect-metadata --save // typeorm捆绑包
     npm install mysql --save
-    npm install log4js @types/log4js --save
+    npm install log4js @types/log4js --save //日志
+    npm i node-gyp --save //bcrypt捆绑包
+    npm install bcrypt @types/bcrypt --save //密码加密
 
 -vscode 插件
     koroFileHeader 用于生成注释

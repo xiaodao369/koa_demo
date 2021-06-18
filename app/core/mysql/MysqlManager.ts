@@ -3,7 +3,7 @@
  * @Autor: 小道
  * @Date: 2021-06-11 21:38:54
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-15 18:00:59
+ * @LastEditTime: 2021-06-18 17:45:23
  */
 
 import * as log4js from "log4js";
@@ -23,6 +23,7 @@ export default class MysqlManager extends BaseSingle {
      */
     async init(entityPath: string) {
         let options: any = AppConfig.development == true ? AppConfig.debug.mysql : AppConfig.release.mysql;
+        //自动创建表
         // options.synchronize = true;
         options.entities = [entityPath + "/*.js"]
         if (AppConfig.development) {
@@ -45,7 +46,7 @@ class MysqlLogger implements Logger {
      * Logs query that is failed.
      */
     logQueryError(error: string | Error, query: string, parameters?: any[], queryRunner?: QueryRunner): any {
-        this._logger.info(error);
+        this._logger.error(error);
     }
     /**
      * Logs query that is slow.

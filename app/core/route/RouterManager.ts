@@ -3,7 +3,7 @@
  * @Author: 小道
  * @Date: 2021-06-10 10:16:19
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-16 16:47:10
+ * @LastEditTime: 2021-06-16 19:54:17
  */
 import { resolve } from "path";
 import BaseSingle from "../base/BaseSingle";
@@ -112,7 +112,7 @@ export class RouterManager extends BaseSingle {
             let idx = reqUrl.indexOf("?");
             if (idx >= 0) reqUrl = reqUrl.substr(0, idx)
         }
-        LogManager.instance().httpLog.info(method + " ------> " + reqUrl + " " + JSON.stringify(ctx));
+        LogManager.instance().httpLog.info(method + " ------> " + reqUrl + " " + JSON.stringify(ctx.request));
         let tempMap = this._routerMap.get(ctx.request.method.toLocaleLowerCase());
         if (tempMap == null) {
             await next();

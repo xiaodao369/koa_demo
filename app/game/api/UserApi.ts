@@ -3,7 +3,7 @@
  * @Author: 小道
  * @Date: 2021-06-11 15:42:00
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-12 17:30:08
+ * @LastEditTime: 2021-06-17 11:34:10
  */
 
 import { Context } from "koa";
@@ -44,10 +44,9 @@ export default class UserApi {
      * @apiSuccess {number} code 0.设置成功
      */
     @POST("create")
-    async create(ctx:Context){
+    async create(ctx: Context) {
         let logic = new UserLogic();
         let result = await logic.create(ctx.request.body as any);
-        ctx.status = 200;
         ctx.body = result;
     }
 }

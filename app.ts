@@ -3,7 +3,7 @@
  * @Author: 小道
  * @Date: 2021-06-09 15:56:53
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-16 16:47:51
+ * @LastEditTime: 2021-06-16 17:19:44
  */
 
 import Koa, { Context } from "koa";
@@ -23,22 +23,7 @@ LogManager.instance().logger.debug("---------------------------start app--------
 
 const app = new Koa();
 
-app.use(bodyParser({
-    onerror: function (err, ctx) {
-        ctx.throw('body parse error', 422);
-    },
-}));
-
-//路由表映射
-const router = RouterManager.instance().init(__dirname.replace(/\\/g, '/') + "/app/game/api");
-
-app.use(router.routes());
-
-//静态api文档
-app.use(serve(path.join(__dirname, "..", "apidoc")))
-
-//koa2 错误处理
-app.use((ctx, next) => {
+const errorHandle = function (ctx: Context, next: any) {
     try {
         //禁用koa-bodyparser
         // if (ctx.path === '/disable') ctx.disableBodyParser = true;
@@ -47,7 +32,7 @@ app.use((ctx, next) => {
     } catch (err) {
         // 所有的异常都在 app 上触发一个 error 事件，框架会记录一条错误日志
         LogManager.instance().httpLog.error(err);
-        app.emit('error', err, this)
+        app.emit('error', err)
         const status = err.status || 500
         // 生产环境时 500 错误的详细错误内容不返回给客户端，因为可能包含敏感信息
         const error = err.message
@@ -57,12 +42,30 @@ app.use((ctx, next) => {
             error: error
         }
         if (status === 422) {
-            ctx.body.detail = err.errors
+            (ctx.body as any).detail = err.errors
         }
         ctx.status = 200
     }
-})
+}
 
+//路由表映射
+const router = RouterManager.instance().init(__dirname.replace(/\\/g, '/') + "/app/game/api");
+
+/**post 消息解析 */
+app.use(bodyParser({
+    onerror: function (err, ctx) {
+        ctx.throw('body parse error', 422);
+    },
+}));
+
+//路由
+app.use(router.routes());
+
+//静态api文档
+app.use(serve(path.join(__dirname, "..", "apidoc")))
+
+//koa2 错误处理
+app.use(errorHandle)
 
 //启动redis连接
 RedisManager.instance().init();
