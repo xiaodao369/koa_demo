@@ -11,6 +11,18 @@
     npm install log4js @types/log4js --save //日志
     npm i node-gyp --save //bcrypt捆绑包
     npm install bcrypt @types/bcrypt --save //密码加密
+    npm i jsonwebtoken @types/jsonwebtoken --save  //token验证
+
+-公钥与私钥
+    // npm i node-rsa -D
+    const NodeRSA = require("node-rsa");
+    const key = new NodeRSA({ b: 1024 }); //生成2048位的密钥
+    let publicCert = key.exportKey("pkcs1-public-pem");  //公钥
+    let privateCert = key.exportKey("pkcs1-private-pem");//私钥
+    //不需要有头部尾部换行，简单来说就是只要一个字符串           
+    // publicDer = publicDer.replace(/\n/g,'');
+    console.log("publicCert......", publicCert)
+    console.log("privateCert......", privateCert)
 
 -vscode 插件
     koroFileHeader 用于生成注释

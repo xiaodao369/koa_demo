@@ -1,11 +1,11 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 /*
  * @Description: 用户基础信息表
  * @Autor: 小道
  * @Date: 2021-06-12 10:35:53
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-18 17:44:41
+ * @LastEditTime: 2021-06-21 09:41:49
  */
 @Entity({ name: "UserBase" })
 export class UserBaseEntity {

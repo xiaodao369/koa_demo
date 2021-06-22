@@ -7,7 +7,7 @@ import RedisPool from "./RedisPool";
  * @Author: 小道
  * @Date: 2021-06-11 16:49:06
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-15 16:11:43
+ * @LastEditTime: 2021-06-22 10:46:45
  */
 export default class RedisManager extends BaseSingle {
 
@@ -28,5 +28,19 @@ export default class RedisManager extends BaseSingle {
             client = RedisPool.instance().get()
         }
         return client;
+    }
+
+    /**判断key是否存在
+     * @param key
+     * @returns boolean
+     */
+    exists(key: string): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            this.redis.exists(key, (err, reply) => {
+                console.log("reply", reply);
+                if (reply) resolve(true);
+                else resolve(false);
+            })
+        })
     }
 }

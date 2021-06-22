@@ -3,7 +3,7 @@
  * @Author: 小道
  * @Date: 2021-06-11 15:42:00
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-17 11:34:10
+ * @LastEditTime: 2021-06-21 14:03:55
  */
 
 import { Context } from "koa";
@@ -41,12 +41,16 @@ export default class UserApi {
      * @apiParam {string} head 头像
      * @apiParam {number} sex 性别
      * @apiSuccess {object} data {code:number}
-     * @apiSuccess {number} code 0.设置成功
+     * @apiSuccess {number} code 0.设置成功 1.名称错误 2.头像错误 3.性别错误
      */
     @POST("create")
-    async create(ctx: Context) {
+    async create(data: { nick: string, head: string, sex: string }) {
         let logic = new UserLogic();
-        let result = await logic.create(ctx.request.body as any);
-        ctx.body = result;
+        if (data.nick == null || data.nick === "") return { code: 1 };
+        if (data.head == null || data.head === "") return { code: 2 };
+        let sex = Number(data.sex) || -1;
+        if (sex < 0 || sex > 2) return { code: 3 };
+        let result = await logic.create(data.nick, data.head, sex);
+        return result
     }
 }

@@ -3,7 +3,7 @@
  * @Author: 小道
  * @Date: 2021-06-16 20:02:50
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-18 16:36:33
+ * @LastEditTime: 2021-06-22 09:40:21
  */
 
 import { EntityManager, EntityRepository } from "typeorm";
@@ -17,11 +17,20 @@ export default class LoginRepository {
 
     constructor(private _manager: EntityManager) { }
 
-    /**获取账户 */
-    async getAccount(username: string) {
+    /**根据useranme获取账户 */
+    async getAccountByUserName(username: string) {
         let account = await this._manager
             .createQueryBuilder(AccountEntity, "account")
             .where("account.username = :username", { username })
+            .getOne();
+        return account;
+    }
+
+    /**根据uid 获取账户*/
+    async getAccountByUid(uid: string) {
+        let account = await this._manager
+            .createQueryBuilder(AccountEntity, "account")
+            .where("account.uid = :uid", { uid })
             .getOne();
         return account;
     }

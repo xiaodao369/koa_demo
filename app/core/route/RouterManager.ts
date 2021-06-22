@@ -3,13 +3,15 @@
  * @Author: 小道
  * @Date: 2021-06-10 10:16:19
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-16 19:54:17
+ * @LastEditTime: 2021-06-21 19:42:17
  */
 import { resolve } from "path";
 import BaseSingle from "../base/BaseSingle";
 import KoaRouter from "koa-router";
 import { Context } from "koa";
 import { LogManager } from "../log4js/LogManager";
+import { TokenUtils } from "../../utils/TokenUtils";
+import { Code } from "typeorm";
 
 const glob = require("glob");
 
@@ -103,6 +105,7 @@ export class RouterManager extends BaseSingle {
         }
     }
 
+    private _tokenWhiteList: string[] = ["/login/loginAuto", "/login/resetToken"];
     /**消息处理 */
     private async messageHandle(ctx: Context, next: any) {
         let curTime = Date.now()
@@ -112,24 +115,50 @@ export class RouterManager extends BaseSingle {
             let idx = reqUrl.indexOf("?");
             if (idx >= 0) reqUrl = reqUrl.substr(0, idx)
         }
-        LogManager.instance().httpLog.info(method + " ------> " + reqUrl + " " + JSON.stringify(ctx.request));
+
+        let log = method + " ------> " + reqUrl + " header：" + JSON.stringify(ctx.request.header);
+        if (ctx.request.body) log += " body：" + JSON.stringify(ctx.request.body);
+        LogManager.instance().httpLog.info(log);
+
+
         let tempMap = this._routerMap.get(ctx.request.method.toLocaleLowerCase());
         if (tempMap == null) {
             await next();
             return;
         }
+
         let methodData = tempMap.get(reqUrl);
         if (methodData == null) {
             await next();
             return;
         }
+
         let params: any;
         if (method === "GET") {
             params = ctx.request.query
         } else if (method === "POST") {
             params = ctx.request.body;
         }
-        let callData = await methodData.module.prototype[methodData.funcName](params);
+
+        let callData: any;
+        if (!this._tokenWhiteList.includes(reqUrl)) {//token验证
+            let token = (ctx.header["access-key"] as string) || "";
+            let tokenData = TokenUtils.verifyToken(token);
+            if (tokenData.code === 2) {
+                ctx.status = 401;
+                if (tokenData.message === "jwt expired")
+                    ctx.body = { code: 500, message: "token timeOut" };
+                else
+                    ctx.body = { code: 500, message: "token error：" + tokenData.message };
+                LogManager.instance().httpLog.error(method + " <------ " + reqUrl + " token error：" + tokenData.message);
+                return;
+            }
+            callData = await methodData.module.prototype[methodData.funcName](params, tokenData.data);
+        } else {
+            if (ctx.header["access-key"]) params = { token: ctx.header["access-key"] };
+            callData = await methodData.module.prototype[methodData.funcName](params);
+        }
+
         ctx.body = callData;
         let timer = Date.now() - curTime;
         if (timer >= 1000) LogManager.instance().httpLog.error(method + " <------ " + reqUrl + " " + timer + "ms data:" + JSON.stringify(callData));
