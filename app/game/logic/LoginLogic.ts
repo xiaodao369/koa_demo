@@ -3,7 +3,7 @@
  * @Author: 小道
  * @Date: 2021-06-16 19:43:29
  * @LastEditors: 小道
- * @LastEditTime: 2021-06-22 14:28:00
+ * @LastEditTime: 2021-06-22 16:26:53
  */
 
 import { getCustomRepository } from "typeorm"
@@ -104,8 +104,12 @@ export default class LoginLogic {
         if (!isExists) { //设置过期时间
             let startTime = new Date().getTime(); // 当天0点
             let endTime = new Date(new Date(new Date().toLocaleDateString()).getTime() + 24 * 60 * 60 * 1000 - 1).getTime();
-            if (endTime - startTime)
-                redisManager.redis.expire(TokenUtils.redis_key_token, 60 * 60)
+            let resultTime = endTime - startTime //距离凌晨剩余的时间
+            if (resultTime < (1000 * 60 * 60 * 3)) { //小于3小时 延迟到第二天
+                resultTime += (1000 * 60 * 60 * 4)
+            }
+            resultTime += (1000 * 60 * 60 * 3) //延迟到凌晨3点
+            redisManager.redis.expire(TokenUtils.redis_key_token, 60 * 60)
         }
     }
 }
